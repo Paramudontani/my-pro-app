@@ -141,6 +141,24 @@ export default function BoomberbetBillionPro() {
           </div>
         </header>
 
+        {/* 🌟 PRO FEATURE BANNER (คำอธิบายการใช้งานแบบโปร) 🌟 */}
+        <div className="bg-gradient-to-r from-amber-500/20 via-amber-400/10 to-yellow-600/20 border border-amber-400/30 rounded-2xl p-4 shadow-[0_0_25px_rgba(245,158,11,0.15)] flex flex-col md:flex-row items-center justify-between gap-4">
+          <div className="flex items-center gap-3">
+            <span className="text-3xl animate-pulse">⚡</span>
+            <div>
+              <h3 className="text-sm font-black text-amber-300 uppercase tracking-wide">
+                ระบบคำนวณอัตโนมัติระดับ PRO (AUTOMATED MONEY MANAGEMENT)
+              </h3>
+              <p className="text-xs text-amber-100/80 mt-0.5">
+                แค่อย่างเดียว! <strong className="text-amber-400 font-extrabold">ใส่วงเงินต้นทุนของคุณ</strong> ระบบจะทำการวิเคราะห์ความเสี่ยง, คำนวณขนาด Lot Size, Leverage, ค่า R:R และจุด Stop Loss ให้ทั้งหมดอัตโนมัติแม่นยำระดับสถาบัน
+              </p>
+            </div>
+          </div>
+          <span className="text-[10px] font-mono font-bold text-black bg-amber-400 px-3 py-1.5 rounded-full uppercase whitespace-nowrap shadow-md">
+            1-CLICK AUTO ANALYTICS
+          </span>
+        </div>
+
         {/* 📊 MAIN CALCULATOR GRID */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
           
@@ -156,17 +174,17 @@ export default function BoomberbetBillionPro() {
 
             {/* Capital Input */}
             <div className="space-y-1.5">
-              <label className="text-xs text-amber-200/70 font-medium block">
-                เงินทุนทั้งหมดในพอร์ต (Capital Balance)
+              <label className="text-xs text-amber-200/90 font-bold block">
+                💰 ใส่เงินทุนของคุณที่นี่ (Capital Balance)
               </label>
               <div className="relative">
                 <input
                   type="number"
                   value={capital}
                   onChange={(e) => setCapital(Number(e.target.value))}
-                  className="w-full bg-[#040407] border border-amber-500/40 rounded-xl px-4 py-3 text-amber-300 font-mono text-xl font-black focus:outline-none focus:border-amber-400 focus:ring-1 focus:ring-amber-400/50 shadow-inner"
+                  className="w-full bg-[#040407] border-2 border-amber-400/60 rounded-xl px-4 py-3 text-amber-300 font-mono text-2xl font-black focus:outline-none focus:border-amber-300 focus:ring-2 focus:ring-amber-400/50 shadow-[0_0_20px_rgba(245,158,11,0.2)]"
                 />
-                <span className="absolute right-4 top-1/2 -translate-y-1/2 text-xs font-mono text-amber-500/60 font-bold">
+                <span className="absolute right-4 top-1/2 -translate-y-1/2 text-xs font-mono text-amber-400 font-bold">
                   {currency}
                 </span>
               </div>
@@ -333,7 +351,7 @@ export default function BoomberbetBillionPro() {
               )}
             </div>
 
-            {/* 🔥 PRO ADVANCED ANALYTICS (ยัดฟีเจอร์คำนวณสถาบันเพิ่ม) */}
+            {/* 🔥 PRO ADVANCED ANALYTICS */}
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 font-mono text-xs">
               <div className="bg-[#08080f] p-3.5 rounded-2xl border border-white/5 space-y-1">
                 <span className="text-[10px] text-amber-200/50 uppercase block">Drawdown Recovery</span>
