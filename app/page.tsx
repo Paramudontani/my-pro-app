@@ -8,7 +8,7 @@ export default function BinanceFuturesProCalculator() {
   const [riskPercent, setRiskPercent] = useState<number>(2); // % ความเสี่ยงที่ยอมรับได้ต่อไม้ (Default 2%)
   const [leverage, setLeverage] = useState<number>(20); // Leverage
   const [percentSlider, setPercentSlider] = useState<number>(50); // % ของ Avbl ที่จะใช้
-  const [entryPrice, setEntryPrice] = useState<number>(65420.50); // ราคาเข้า BTC/USDT (เรียลไทม์อยู่ล่างสุด)
+  const [entryPrice, setEntryPrice] = useState<number>(65420.50); // ราคาเข้า BTC/USDT
   const [takeProfitPrice, setTakeProfitPrice] = useState<number>(68000.00); // TP
   const [stopLossPrice, setStopLossPrice] = useState<number>(64000.00); // SL
 
@@ -36,13 +36,13 @@ export default function BinanceFuturesProCalculator() {
 
   return (
     <div className="min-h-screen bg-[#05080e] text-slate-200 p-4 md:p-8 font-sans relative overflow-hidden selection:bg-cyan-500 selection:text-black">
-      {/* 🌌 Background Neon Glow Effects */}
+      {/* Background Neon Glow Effects */}
       <div className="fixed top-0 left-1/4 w-96 h-96 bg-cyan-500/10 rounded-full blur-[120px] pointer-events-none" />
       <div className="fixed bottom-0 right-1/4 w-96 h-96 bg-emerald-500/10 rounded-full blur-[120px] pointer-events-none" />
 
       <div className="max-w-5xl mx-auto space-y-6 relative z-10">
         
-        {/* 🏆 BRANDING HEADER & ACTION BUTTONS SECTION */}
+        {/* BRANDING HEADER & ACTION BUTTONS SECTION */}
         <div className="bg-[#0b121e]/90 border border-cyan-500/30 rounded-2xl p-4 md:p-6 backdrop-blur-xl shadow-[0_0_30px_rgba(0,240,255,0.1)] flex flex-col md:flex-row items-center justify-between gap-4">
           
           {/* Logo & Brand Title */}
@@ -85,7 +85,7 @@ export default function BinanceFuturesProCalculator() {
 
         </div>
 
-        {/* ⚡ BANNER คำอธิบาย */}
+        {/* BANNER คำอธิบาย */}
         <div className="bg-gradient-to-r from-cyan-950/40 via-emerald-950/20 to-transparent border border-cyan-500/30 rounded-2xl p-4 flex flex-col md:flex-row items-center justify-between gap-4 backdrop-blur-xl shadow-[0_0_20px_rgba(0,240,255,0.05)]">
           <div className="flex items-center gap-3">
             <div className="p-2 rounded-xl bg-cyan-500/10 border border-cyan-500/40 text-cyan-400 shadow-[0_0_10px_rgba(0,240,255,0.3)]">
@@ -96,7 +96,7 @@ export default function BinanceFuturesProCalculator() {
                 ระบบคำนวณอัตโนมัติ BINANCE TRADER PRO
               </h2>
               <p className="text-xs text-slate-400 mt-0.5">
-                ใส่ <strong className="text-cyan-400">เงินทุน (Avbl)</strong> ➔ กำหนด <strong className="text-cyan-400">Risk %</strong> ➔ ปรับ <strong className="text-cyan-400">Leverage</strong> ระบบจะคำนวณจำนวนเงินต่อไม้และประเมินความเสี่ยงทันที!
+                ใส่ <strong className="text-cyan-400">เงินทุน (Avbl)</strong> ➔ กำหนด <strong className="text-cyan-400">Risk %</strong> ➔ ปรับ <strong className="text-cyan-400">Leverage</strong> ระบบจะคำนวณขนาดไม้ทั้ง USDT และ BTC ให้ทันที!
               </p>
             </div>
           </div>
@@ -108,7 +108,7 @@ export default function BinanceFuturesProCalculator() {
           </button>
         </div>
 
-        {/* 📊 MAIN BINANCE TRADING PANEL */}
+        {/* MAIN BINANCE TRADING PANEL */}
         <div className="bg-[#0b121e]/80 border border-cyan-500/30 rounded-2xl p-5 md:p-6 backdrop-blur-xl shadow-[0_0_25px_rgba(0,102,255,0.08)]">
           
           {/* Symbol Bar */}
@@ -125,7 +125,7 @@ export default function BinanceFuturesProCalculator() {
 
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
             
-            {/* 👈 LEFT: BINANCE ORDER FORM (เรียงลำดับใหม่) */}
+            {/* LEFT: BINANCE ORDER FORM */}
             <div className="lg:col-span-6 space-y-4">
               
               {/* Buy / Sell Tabs */}
@@ -156,7 +156,7 @@ export default function BinanceFuturesProCalculator() {
                 </div>
               </div>
 
-              {/* 2️⃣ 🔥 RISK (%) ย้ายมาไว้ใต้เงินทุนตามคำขอ */}
+              {/* 2️⃣ RISK (%) */}
               <div className="space-y-1">
                 <div className="flex justify-between text-xs text-slate-400">
                   <span>2. Risk % (ความเสี่ยงที่ยอมรับได้ต่อไม้)</span>
@@ -176,7 +176,6 @@ export default function BinanceFuturesProCalculator() {
                   />
                   <span className="text-xs font-mono text-slate-400 font-bold">%</span>
                 </div>
-                {/* Quick Select Risk % */}
                 <div className="grid grid-cols-4 gap-1.5 pt-1">
                   {[1, 2, 3, 5].map((r) => (
                     <button
@@ -246,7 +245,7 @@ export default function BinanceFuturesProCalculator() {
                 ))}
               </div>
 
-              {/* 4️⃣ 🔥 Price (ราคาเข้าออเดอร์ - ย้ายมาไว้ท้ายสุดก่อน TP/SL) */}
+              {/* 4️⃣ Price (ราคาเข้าเรียลไทม์) */}
               <div className="space-y-1 pt-2 border-t border-cyan-500/20">
                 <div className="flex justify-between text-xs text-slate-400">
                   <span>4. Price (ราคาเข้าเรียลไทม์)</span>
@@ -264,19 +263,32 @@ export default function BinanceFuturesProCalculator() {
                 </div>
               </div>
 
-              {/* Auto Size Output */}
-              <div className="space-y-1">
+              {/* 🔥 SIZE OUTPUT: แสดงผลคู่ USDT / BTC */}
+              <div className="space-y-2">
                 <div className="flex justify-between text-xs text-slate-400">
                   <span>Size (ขนาดออเดอร์ที่ควรออกต่อไม้)</span>
                 </div>
-                <div className="relative flex items-center bg-[#05080e] border border-emerald-500/30 rounded-xl px-3 py-2">
-                  <input
-                    type="text"
-                    readOnly
-                    value={orderSizeInCoin.toFixed(4)}
-                    className="w-full bg-transparent font-mono text-sm font-bold text-emerald-400 focus:outline-none drop-shadow-[0_0_8px_rgba(0,255,102,0.3)]"
-                  />
-                  <span className="text-xs font-mono text-slate-400">BTC</span>
+                
+                <div className="grid grid-cols-2 gap-2">
+                  <div className="bg-[#05080e] border border-cyan-500/30 rounded-xl px-3 py-2">
+                    <span className="text-[10px] text-slate-500 block uppercase font-mono">มูลค่า USDT</span>
+                    <div className="flex items-center justify-between">
+                      <span className="font-mono text-sm font-bold text-cyan-300 drop-shadow-[0_0_8px_rgba(0,240,255,0.3)]">
+                        {positionValue.toFixed(2)}
+                      </span>
+                      <span className="text-xs font-mono text-slate-400">USDT</span>
+                    </div>
+                  </div>
+
+                  <div className="bg-[#05080e] border border-emerald-500/30 rounded-xl px-3 py-2">
+                    <span className="text-[10px] text-slate-500 block uppercase font-mono">จำนวน BTC</span>
+                    <div className="flex items-center justify-between">
+                      <span className="font-mono text-sm font-bold text-emerald-400 drop-shadow-[0_0_8px_rgba(0,255,102,0.3)]">
+                        {orderSizeInCoin.toFixed(4)}
+                      </span>
+                      <span className="text-xs font-mono text-slate-400">BTC</span>
+                    </div>
+                  </div>
                 </div>
               </div>
 
@@ -309,7 +321,7 @@ export default function BinanceFuturesProCalculator() {
 
             </div>
 
-            {/* 👉 RIGHT: PRO TRADER ANALYTICS RESULTS */}
+            {/* RIGHT: PRO TRADER ANALYTICS RESULTS */}
             <div className="lg:col-span-6 bg-[#05080e]/80 border border-cyan-500/20 rounded-xl p-4 flex flex-col justify-between space-y-4">
               <div>
                 <h3 className="text-xs font-bold bg-gradient-to-r from-cyan-400 to-emerald-400 bg-clip-text text-transparent uppercase tracking-wider mb-3">
