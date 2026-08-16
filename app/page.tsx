@@ -4,15 +4,17 @@ import React, { useState } from "react";
 
 export default function BinanceFuturesProCalculator() {
   // Inputs State
-  const [avbl, setAvbl] = useState<number>(0); // ยอด Avbl USDT (เริ่มต้น 0)
-  const [leverage, setLeverage] = useState<number>(20); // Leverage (กรอก/ปรับเปลี่ยนได้)
+  const [avbl, setAvbl] = useState<number>(0); // ยอด Avbl USDT (เริ่มต้น 0.00)
+  const [riskPercent, setRiskPercent] = useState<number>(2); // % ความเสี่ยงที่ยอมรับได้ต่อไม้ (Default 2%)
+  const [leverage, setLeverage] = useState<number>(20); // Leverage
   const [percentSlider, setPercentSlider] = useState<number>(50); // % ของ Avbl ที่จะใช้
-  const [entryPrice, setEntryPrice] = useState<number>(65420.50); // ราคาเข้า BTC/USDT
+  const [entryPrice, setEntryPrice] = useState<number>(65420.50); // ราคาเข้า BTC/USDT (เรียลไทม์อยู่ล่างสุด)
   const [takeProfitPrice, setTakeProfitPrice] = useState<number>(68000.00); // TP
   const [stopLossPrice, setStopLossPrice] = useState<number>(64000.00); // SL
 
-  // 🧮 Auto Calculations (สูตรคำนวณสถาบัน)
-  const marginUsed = (avbl * percentSlider) / 100; // เงินประกันที่ใช้จริง (USDT)
+  // 🧮 Auto Calculations
+  const maxRiskAmount = (avbl * riskPercent) / 100; // จำนวนเงิน USDT สูงสุดที่ยอมเสียตาม Risk %
+  const marginUsed = (avbl * percentSlider) / 100; // เงินประกันที่ใช้จริงต่อไม้ (USDT)
   const positionValue = marginUsed * leverage; // มูลค่าออเดอร์รวม (USDT)
   const orderSizeInCoin = entryPrice > 0 ? positionValue / entryPrice : 0; // ขนาดสัญญา (BTC)
 
@@ -27,7 +29,7 @@ export default function BinanceFuturesProCalculator() {
   const priceDiffSL = Math.abs(entryPrice - stopLossPrice);
   const rrRatio = priceDiffSL > 0 ? (priceDiffTP / priceDiffSL).toFixed(2) : "0.00";
 
-  // ฟังก์ชันคลิกเด้งไปเว็บ www.boomberbet.com
+  // Redirect link
   const handleRedirect = () => {
     window.open("https://www.boomberbet.com", "_blank", "noopener,noreferrer");
   };
@@ -94,7 +96,7 @@ export default function BinanceFuturesProCalculator() {
                 ระบบคำนวณอัตโนมัติ BINANCE TRADER PRO
               </h2>
               <p className="text-xs text-slate-400 mt-0.5">
-                กรอกวงเงินต้นทุนของคุณในช่อง <strong className="text-cyan-400">Avbl (USDT)</strong> และกำหนด <strong className="text-cyan-400">Leverage</strong> ระบบจะคำนวณผลลัพธ์ให้อัตโนมัติทันที!
+                ใส่ <strong className="text-cyan-400">เงินทุน (Avbl)</strong> ➔ กำหนด <strong className="text-cyan-400">Risk %</strong> ➔ ปรับ <strong className="text-cyan-400">Leverage</strong> ระบบจะคำนวณจำนวนเงินต่อไม้และประเมินความเสี่ยงทันที!
               </p>
             </div>
           </div>
@@ -123,7 +125,7 @@ export default function BinanceFuturesProCalculator() {
 
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
             
-            {/* 👈 LEFT: BINANCE ORDER FORM */}
+            {/* 👈 LEFT: BINANCE ORDER FORM (เรียงลำดับใหม่) */}
             <div className="lg:col-span-6 space-y-4">
               
               {/* Buy / Sell Tabs */}
@@ -136,10 +138,10 @@ export default function BinanceFuturesProCalculator() {
                 </button>
               </div>
 
-              {/* Avbl Input (เริ่มต้น 0.00) */}
+              {/* 1️⃣ Avbl Input (เงินทุน) */}
               <div className="space-y-1">
                 <div className="flex justify-between text-xs text-slate-400">
-                  <span>Avbl (เงินทุนของคุณ)</span>
+                  <span>1. Avbl (เงินทุนของคุณ)</span>
                   <span className="text-cyan-400 font-mono font-bold">{avbl > 0 ? avbl.toLocaleString() : "0.00"} USDT</span>
                 </div>
                 <div className="relative flex items-center bg-[#05080e] border border-cyan-400/60 rounded-xl px-3 py-2.5 shadow-[0_0_12px_rgba(0,240,255,0.25)] focus-within:border-cyan-300 transition-all">
@@ -154,10 +156,48 @@ export default function BinanceFuturesProCalculator() {
                 </div>
               </div>
 
-              {/* ⚡ 🔥 ช่องปรับ / กรอกค่า LEVERAGE (เพิ่มใหม่ตามคำขอ) */}
+              {/* 2️⃣ 🔥 RISK (%) ย้ายมาไว้ใต้เงินทุนตามคำขอ */}
               <div className="space-y-1">
                 <div className="flex justify-between text-xs text-slate-400">
-                  <span>Leverage (เลเวอเรจ)</span>
+                  <span>2. Risk % (ความเสี่ยงที่ยอมรับได้ต่อไม้)</span>
+                  <span className="text-cyan-300 font-mono font-bold">
+                    {maxRiskAmount.toFixed(2)} USDT ({riskPercent}%)
+                  </span>
+                </div>
+                <div className="relative flex items-center bg-[#05080e] border border-cyan-500/30 rounded-xl px-3 py-2 focus-within:border-cyan-400 transition-all">
+                  <input
+                    type="number"
+                    min="0.1"
+                    max="100"
+                    value={riskPercent === 0 ? "" : riskPercent}
+                    placeholder="2.00"
+                    onChange={(e) => setRiskPercent(Number(e.target.value))}
+                    className="w-full bg-transparent font-mono text-sm font-bold text-cyan-300 focus:outline-none placeholder:text-slate-600"
+                  />
+                  <span className="text-xs font-mono text-slate-400 font-bold">%</span>
+                </div>
+                {/* Quick Select Risk % */}
+                <div className="grid grid-cols-4 gap-1.5 pt-1">
+                  {[1, 2, 3, 5].map((r) => (
+                    <button
+                      key={r}
+                      onClick={() => setRiskPercent(r)}
+                      className={`py-1 rounded text-[10px] font-mono border transition-all ${
+                        riskPercent === r
+                          ? "bg-cyan-500/20 text-cyan-300 border-cyan-400 font-bold shadow-[0_0_8px_rgba(0,240,255,0.3)]"
+                          : "bg-[#05080e] text-slate-500 border-cyan-500/10 hover:text-slate-300"
+                      }`}
+                    >
+                      {r}% Risk
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* 3️⃣ Leverage */}
+              <div className="space-y-1">
+                <div className="flex justify-between text-xs text-slate-400">
+                  <span>3. Leverage (เลเวอเรจ)</span>
                   <span className="text-emerald-400 font-mono font-bold">{leverage}x</span>
                 </div>
                 <div className="relative flex items-center bg-[#05080e] border border-cyan-500/20 rounded-xl px-3 py-2 focus-within:border-cyan-500/50 transition-all">
@@ -172,7 +212,6 @@ export default function BinanceFuturesProCalculator() {
                   />
                   <span className="text-xs font-mono text-slate-400 font-bold">x</span>
                 </div>
-                {/* Quick Select Leverage */}
                 <div className="grid grid-cols-5 gap-1.5 pt-1">
                   {[5, 10, 20, 50, 100].map((lev) => (
                     <button
@@ -190,11 +229,28 @@ export default function BinanceFuturesProCalculator() {
                 </div>
               </div>
 
-              {/* Price Input */}
-              <div className="space-y-1">
+              {/* สัดส่วน Margin Slider */}
+              <div className="grid grid-cols-4 gap-2 pt-1">
+                {[25, 50, 75, 100].map((p) => (
+                  <button
+                    key={p}
+                    onClick={() => setPercentSlider(p)}
+                    className={`py-1.5 rounded-lg text-xs font-mono border transition-all ${
+                      percentSlider === p
+                        ? "bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-bold border-cyan-400 shadow-[0_0_12px_rgba(0,102,255,0.4)]"
+                        : "bg-[#05080e] text-slate-400 border-cyan-500/20 hover:text-white hover:border-cyan-500/40"
+                    }`}
+                  >
+                    {p}% ทุน
+                  </button>
+                ))}
+              </div>
+
+              {/* 4️⃣ 🔥 Price (ราคาเข้าออเดอร์ - ย้ายมาไว้ท้ายสุดก่อน TP/SL) */}
+              <div className="space-y-1 pt-2 border-t border-cyan-500/20">
                 <div className="flex justify-between text-xs text-slate-400">
-                  <span>Price (ราคาเข้าออเดอร์)</span>
-                  <span className="text-xs text-cyan-400 cursor-pointer hover:underline">BBO</span>
+                  <span>4. Price (ราคาเข้าเรียลไทม์)</span>
+                  <span className="text-xs text-cyan-400 cursor-pointer hover:underline">BBO (Real-time)</span>
                 </div>
                 <div className="relative flex items-center bg-[#05080e] border border-cyan-500/20 rounded-xl px-3 py-2 focus-within:border-cyan-500/50 transition-all">
                   <input
@@ -211,7 +267,7 @@ export default function BinanceFuturesProCalculator() {
               {/* Auto Size Output */}
               <div className="space-y-1">
                 <div className="flex justify-between text-xs text-slate-400">
-                  <span>Size (ขนาดออเดอร์อัตโนมัติ)</span>
+                  <span>Size (ขนาดออเดอร์ที่ควรออกต่อไม้)</span>
                 </div>
                 <div className="relative flex items-center bg-[#05080e] border border-emerald-500/30 rounded-xl px-3 py-2">
                   <input
@@ -222,23 +278,6 @@ export default function BinanceFuturesProCalculator() {
                   />
                   <span className="text-xs font-mono text-slate-400">BTC</span>
                 </div>
-              </div>
-
-              {/* Percentage Slider */}
-              <div className="grid grid-cols-4 gap-2 pt-1">
-                {[25, 50, 75, 100].map((p) => (
-                  <button
-                    key={p}
-                    onClick={() => setPercentSlider(p)}
-                    className={`py-1.5 rounded-lg text-xs font-mono border transition-all ${
-                      percentSlider === p
-                        ? "bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-bold border-cyan-400 shadow-[0_0_12px_rgba(0,102,255,0.4)]"
-                        : "bg-[#05080e] text-slate-400 border-cyan-500/20 hover:text-white hover:border-cyan-500/40"
-                    }`}
-                  >
-                    {p}%
-                  </button>
-                ))}
               </div>
 
               {/* TP/SL inputs */}
@@ -279,7 +318,7 @@ export default function BinanceFuturesProCalculator() {
 
                 <div className="grid grid-cols-2 gap-3 mb-4">
                   <div className="bg-[#0b121e] p-3 rounded-xl border border-cyan-500/20">
-                    <span className="text-[10px] text-slate-400 block">Initial Margin (หลักประกัน)</span>
+                    <span className="text-[10px] text-slate-400 block">Initial Margin (เงินประกันต่อไม้)</span>
                     <span className="text-lg font-mono font-bold text-cyan-300 drop-shadow-[0_0_8px_rgba(0,240,255,0.3)]">
                       {marginUsed.toFixed(2)} USDT
                     </span>
@@ -295,8 +334,15 @@ export default function BinanceFuturesProCalculator() {
                   </div>
                 </div>
 
-                {/* Risk / Reward & PnL List */}
+                {/* Risk & PnL List */}
                 <div className="space-y-2 text-xs font-mono">
+                  <div className="flex justify-between py-1.5 border-b border-cyan-500/10">
+                    <span className="text-slate-400">Max Risk Limit (รับความเสี่ยงสูงสุด):</span>
+                    <span className="text-cyan-300 font-bold">
+                      -{maxRiskAmount.toFixed(2)} USDT ({riskPercent}%)
+                    </span>
+                  </div>
+
                   <div className="flex justify-between py-1.5 border-b border-cyan-500/10">
                     <span className="text-slate-400">Est. Profit (Take Profit):</span>
                     <span className="text-emerald-400 font-bold drop-shadow-[0_0_6px_rgba(0,255,102,0.3)]">
