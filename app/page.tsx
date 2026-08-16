@@ -27,6 +27,11 @@ export default function BinanceFuturesProCalculator() {
   const priceDiffSL = Math.abs(entryPrice - stopLossPrice);
   const rrRatio = priceDiffSL > 0 ? (priceDiffTP / priceDiffSL).toFixed(2) : "0.00";
 
+  // ฟังก์ชันคลิกเด้งไปเว็บ www.boomberbet.com
+  const handleRedirect = () => {
+    window.open("https://www.boomberbet.com", "_blank", "noopener,noreferrer");
+  };
+
   return (
     <div className="min-h-screen bg-[#05080e] text-slate-200 p-4 md:p-8 font-sans relative overflow-hidden selection:bg-cyan-500 selection:text-black">
       {/* 🌌 Background Neon Glow Effects */}
@@ -35,6 +40,49 @@ export default function BinanceFuturesProCalculator() {
 
       <div className="max-w-5xl mx-auto space-y-6 relative z-10">
         
+        {/* 🏆 BRANDING HEADER & ACTION BUTTONS SECTION */}
+        <div className="bg-[#0b121e]/90 border border-cyan-500/30 rounded-2xl p-4 md:p-6 backdrop-blur-xl shadow-[0_0_30px_rgba(0,240,255,0.1)] flex flex-col md:flex-row items-center justify-between gap-4">
+          
+          {/* Logo & Brand Title */}
+          <div className="flex items-center gap-4 cursor-pointer" onClick={handleRedirect}>
+            <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-cyan-500 via-emerald-400 to-teal-300 p-0.5 shadow-[0_0_20px_rgba(0,255,102,0.5)] flex items-center justify-center">
+              <div className="w-full h-full bg-[#05080e] rounded-[14px] flex items-center justify-center font-black text-xl text-cyan-400 tracking-tighter">
+                BB
+              </div>
+            </div>
+            <div>
+              <div className="flex items-center gap-2">
+                <h1 className="text-xl md:text-2xl font-black tracking-wider uppercase bg-gradient-to-r from-cyan-400 via-teal-300 to-emerald-400 bg-clip-text text-transparent drop-shadow-[0_0_12px_rgba(0,240,255,0.4)]">
+                  BOOMBERBET
+                </h1>
+                <span className="text-xs font-mono font-bold text-black bg-emerald-400 px-2 py-0.5 rounded shadow-[0_0_10px_rgba(0,255,102,0.5)]">
+                  BILLION
+                </span>
+              </div>
+              <p className="text-xs text-slate-400 font-medium mt-0.5">
+                ระดับพันล้าน • เครื่องมือคำนวณสถาบันการเทรดแบบมืออาชีพ
+              </p>
+            </div>
+          </div>
+
+          {/* Action Buttons (สมัครฟรี / สมาชิกฟรี / รับข้อมูลเพิ่ม) */}
+          <div className="flex items-center gap-2.5 w-full md:w-auto overflow-x-auto pb-1 md:pb-0">
+            <button
+              onClick={handleRedirect}
+              className="flex-1 md:flex-initial px-4 py-2.5 rounded-xl font-bold text-xs bg-gradient-to-r from-emerald-400 to-cyan-400 text-black hover:opacity-95 transition-all shadow-[0_0_15px_rgba(0,255,102,0.4)] whitespace-nowrap active:scale-95"
+            >
+              🔥 สมัครสมาชิกฟรี
+            </button>
+            <button
+              onClick={handleRedirect}
+              className="flex-1 md:flex-initial px-4 py-2.5 rounded-xl font-bold text-xs bg-cyan-500/10 border border-cyan-400/50 text-cyan-300 hover:bg-cyan-500/20 transition-all shadow-[0_0_10px_rgba(0,240,255,0.2)] whitespace-nowrap active:scale-95"
+            >
+              ℹ️ รับข้อมูลเพิ่มเติม
+            </button>
+          </div>
+
+        </div>
+
         {/* ⚡ BANNER คำอธิบายสไตล์ NEON CYBER */}
         <div className="bg-gradient-to-r from-cyan-950/40 via-emerald-950/20 to-transparent border border-cyan-500/30 rounded-2xl p-4 flex flex-col md:flex-row items-center justify-between gap-4 backdrop-blur-xl shadow-[0_0_20px_rgba(0,240,255,0.05)]">
           <div className="flex items-center gap-3">
@@ -43,16 +91,19 @@ export default function BinanceFuturesProCalculator() {
             </div>
             <div>
               <h2 className="text-sm font-bold bg-gradient-to-r from-cyan-400 to-emerald-400 bg-clip-text text-transparent uppercase tracking-wider">
-                ระบบคำนวณอัตโนมัติ BINANCE TRADER PRO (NEON EDITION)
+                ระบบคำนวณอัตโนมัติ BINANCE TRADER PRO
               </h2>
               <p className="text-xs text-slate-400 mt-0.5">
                 เพียงกรอกวงเงินต้นทุนของคุณในช่อง <strong className="text-cyan-400">Avbl (USDT)</strong> ระบบจะคำนวณขนาดออเดอร์, Margin, Leverage, ค่า R:R และคาดการณ์กำไร/ขาดทุนให้อัตโนมัติทันที!
               </p>
             </div>
           </div>
-          <span className="text-[10px] font-mono font-bold text-black bg-gradient-to-r from-cyan-400 to-emerald-400 px-3 py-1.5 rounded-full uppercase whitespace-nowrap shadow-[0_0_15px_rgba(0,255,102,0.4)]">
+          <button
+            onClick={handleRedirect}
+            className="text-[10px] font-mono font-bold text-black bg-gradient-to-r from-cyan-400 to-emerald-400 px-3 py-1.5 rounded-full uppercase whitespace-nowrap shadow-[0_0_15px_rgba(0,255,102,0.4)] hover:scale-105 transition-transform cursor-pointer"
+          >
             1-CLICK BINANCE CALC
-          </span>
+          </button>
         </div>
 
         {/* 📊 MAIN BINANCE TRADING PANEL */}
@@ -227,10 +278,16 @@ export default function BinanceFuturesProCalculator() {
                 </div>
               </div>
 
-              {/* Status Alert */}
-              <div className="bg-emerald-500/10 border border-emerald-500/30 rounded-xl p-3 text-xs text-emerald-400 flex items-center gap-2">
-                <span className="text-sm">✓</span>
-                <span><strong>Binance Risk Approved:</strong> การบริหารเงินทุนอยู่ในสัดส่วนปลอดภัย สามารถกดส่งออเดอร์ตามแผนการเทรดได้ทันที</span>
+              {/* Status Alert & Direct Link */}
+              <div 
+                onClick={handleRedirect}
+                className="bg-emerald-500/10 border border-emerald-500/30 rounded-xl p-3 text-xs text-emerald-400 flex items-center justify-between cursor-pointer hover:bg-emerald-500/20 transition-all"
+              >
+                <div className="flex items-center gap-2">
+                  <span className="text-sm">✓</span>
+                  <span><strong>Binance Risk Approved:</strong> การบริหารเงินทุนอยู่ในสัดส่วนปลอดภัย</span>
+                </div>
+                <span className="text-[10px] underline font-bold whitespace-nowrap ml-2">เข้าสู่เว็บไบแนนซ์ →</span>
               </div>
             </div>
 
