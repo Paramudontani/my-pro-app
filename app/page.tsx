@@ -3,9 +3,9 @@
 import React, { useState } from "react";
 
 export default function BinanceFuturesProCalculator() {
-  // Inputs State (ถอดแบบเมนู Binance)
-  const [avbl, setAvbl] = useState<number>(604.34); // ยอด Avbl USDT
-  const [leverage, setLeverage] = useState<number>(20); // Leverage
+  // Inputs State
+  const [avbl, setAvbl] = useState<number>(0); // ยอด Avbl USDT (เริ่มต้น 0)
+  const [leverage, setLeverage] = useState<number>(20); // Leverage (กรอก/ปรับเปลี่ยนได้)
   const [percentSlider, setPercentSlider] = useState<number>(50); // % ของ Avbl ที่จะใช้
   const [entryPrice, setEntryPrice] = useState<number>(65420.50); // ราคาเข้า BTC/USDT
   const [takeProfitPrice, setTakeProfitPrice] = useState<number>(68000.00); // TP
@@ -65,7 +65,7 @@ export default function BinanceFuturesProCalculator() {
             </div>
           </div>
 
-          {/* Action Buttons (สมัครฟรี / สมาชิกฟรี / รับข้อมูลเพิ่ม) */}
+          {/* Action Buttons */}
           <div className="flex items-center gap-2.5 w-full md:w-auto overflow-x-auto pb-1 md:pb-0">
             <button
               onClick={handleRedirect}
@@ -83,7 +83,7 @@ export default function BinanceFuturesProCalculator() {
 
         </div>
 
-        {/* ⚡ BANNER คำอธิบายสไตล์ NEON CYBER */}
+        {/* ⚡ BANNER คำอธิบาย */}
         <div className="bg-gradient-to-r from-cyan-950/40 via-emerald-950/20 to-transparent border border-cyan-500/30 rounded-2xl p-4 flex flex-col md:flex-row items-center justify-between gap-4 backdrop-blur-xl shadow-[0_0_20px_rgba(0,240,255,0.05)]">
           <div className="flex items-center gap-3">
             <div className="p-2 rounded-xl bg-cyan-500/10 border border-cyan-500/40 text-cyan-400 shadow-[0_0_10px_rgba(0,240,255,0.3)]">
@@ -94,7 +94,7 @@ export default function BinanceFuturesProCalculator() {
                 ระบบคำนวณอัตโนมัติ BINANCE TRADER PRO
               </h2>
               <p className="text-xs text-slate-400 mt-0.5">
-                เพียงกรอกวงเงินต้นทุนของคุณในช่อง <strong className="text-cyan-400">Avbl (USDT)</strong> ระบบจะคำนวณขนาดออเดอร์, Margin, Leverage, ค่า R:R และคาดการณ์กำไร/ขาดทุนให้อัตโนมัติทันที!
+                กรอกวงเงินต้นทุนของคุณในช่อง <strong className="text-cyan-400">Avbl (USDT)</strong> และกำหนด <strong className="text-cyan-400">Leverage</strong> ระบบจะคำนวณผลลัพธ์ให้อัตโนมัติทันที!
               </p>
             </div>
           </div>
@@ -136,20 +136,57 @@ export default function BinanceFuturesProCalculator() {
                 </button>
               </div>
 
-              {/* Avbl Input (ต้นทุน) */}
+              {/* Avbl Input (เริ่มต้น 0.00) */}
               <div className="space-y-1">
                 <div className="flex justify-between text-xs text-slate-400">
                   <span>Avbl (เงินทุนของคุณ)</span>
-                  <span className="text-cyan-400 font-mono font-bold">{avbl.toLocaleString()} USDT</span>
+                  <span className="text-cyan-400 font-mono font-bold">{avbl > 0 ? avbl.toLocaleString() : "0.00"} USDT</span>
                 </div>
                 <div className="relative flex items-center bg-[#05080e] border border-cyan-400/60 rounded-xl px-3 py-2.5 shadow-[0_0_12px_rgba(0,240,255,0.25)] focus-within:border-cyan-300 transition-all">
                   <input
                     type="number"
-                    value={avbl}
+                    value={avbl === 0 ? "" : avbl}
+                    placeholder="0.00"
                     onChange={(e) => setAvbl(Number(e.target.value))}
-                    className="w-full bg-transparent font-mono text-base font-bold text-white focus:outline-none"
+                    className="w-full bg-transparent font-mono text-base font-bold text-white focus:outline-none placeholder:text-slate-600"
                   />
                   <span className="text-xs font-mono text-slate-400 font-bold">USDT</span>
+                </div>
+              </div>
+
+              {/* ⚡ 🔥 ช่องปรับ / กรอกค่า LEVERAGE (เพิ่มใหม่ตามคำขอ) */}
+              <div className="space-y-1">
+                <div className="flex justify-between text-xs text-slate-400">
+                  <span>Leverage (เลเวอเรจ)</span>
+                  <span className="text-emerald-400 font-mono font-bold">{leverage}x</span>
+                </div>
+                <div className="relative flex items-center bg-[#05080e] border border-cyan-500/20 rounded-xl px-3 py-2 focus-within:border-cyan-500/50 transition-all">
+                  <input
+                    type="number"
+                    min="1"
+                    max="125"
+                    value={leverage === 0 ? "" : leverage}
+                    placeholder="1 - 125"
+                    onChange={(e) => setLeverage(Number(e.target.value))}
+                    className="w-full bg-transparent font-mono text-sm font-bold text-emerald-400 focus:outline-none placeholder:text-slate-600"
+                  />
+                  <span className="text-xs font-mono text-slate-400 font-bold">x</span>
+                </div>
+                {/* Quick Select Leverage */}
+                <div className="grid grid-cols-5 gap-1.5 pt-1">
+                  {[5, 10, 20, 50, 100].map((lev) => (
+                    <button
+                      key={lev}
+                      onClick={() => setLeverage(lev)}
+                      className={`py-1 rounded text-[10px] font-mono border transition-all ${
+                        leverage === lev
+                          ? "bg-emerald-500/20 text-emerald-300 border-emerald-400 font-bold shadow-[0_0_8px_rgba(0,255,102,0.3)]"
+                          : "bg-[#05080e] text-slate-500 border-cyan-500/10 hover:text-slate-300"
+                      }`}
+                    >
+                      {lev}x
+                    </button>
+                  ))}
                 </div>
               </div>
 
@@ -162,9 +199,10 @@ export default function BinanceFuturesProCalculator() {
                 <div className="relative flex items-center bg-[#05080e] border border-cyan-500/20 rounded-xl px-3 py-2 focus-within:border-cyan-500/50 transition-all">
                   <input
                     type="number"
-                    value={entryPrice}
+                    value={entryPrice === 0 ? "" : entryPrice}
+                    placeholder="0.00"
                     onChange={(e) => setEntryPrice(Number(e.target.value))}
-                    className="w-full bg-transparent font-mono text-sm font-bold text-white focus:outline-none"
+                    className="w-full bg-transparent font-mono text-sm font-bold text-white focus:outline-none placeholder:text-slate-600"
                   />
                   <span className="text-xs font-mono text-slate-400">USDT</span>
                 </div>
@@ -211,18 +249,20 @@ export default function BinanceFuturesProCalculator() {
                     <span className="text-[10px] text-slate-400 block mb-1">Take Profit</span>
                     <input
                       type="number"
-                      value={takeProfitPrice}
+                      value={takeProfitPrice === 0 ? "" : takeProfitPrice}
+                      placeholder="0.00"
                       onChange={(e) => setTakeProfitPrice(Number(e.target.value))}
-                      className="w-full bg-[#05080e] border border-emerald-500/40 rounded-xl p-2 text-xs font-mono text-emerald-400 focus:outline-none focus:border-emerald-400 transition-all"
+                      className="w-full bg-[#05080e] border border-emerald-500/40 rounded-xl p-2 text-xs font-mono text-emerald-400 focus:outline-none focus:border-emerald-400 transition-all placeholder:text-slate-600"
                     />
                   </div>
                   <div>
                     <span className="text-[10px] text-slate-400 block mb-1">Stop Loss</span>
                     <input
                       type="number"
-                      value={stopLossPrice}
+                      value={stopLossPrice === 0 ? "" : stopLossPrice}
+                      placeholder="0.00"
                       onChange={(e) => setStopLossPrice(Number(e.target.value))}
-                      className="w-full bg-[#05080e] border border-cyan-500/40 rounded-xl p-2 text-xs font-mono text-cyan-400 focus:outline-none focus:border-cyan-300 transition-all"
+                      className="w-full bg-[#05080e] border border-cyan-500/40 rounded-xl p-2 text-xs font-mono text-cyan-400 focus:outline-none focus:border-cyan-300 transition-all placeholder:text-slate-600"
                     />
                   </div>
                 </div>
